@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -47,14 +48,48 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: Column(
         children: [
-          Container(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Expanded(
-                  child: Container(
-                    height: 38,
+          Stack(
+            children: [
+              Container(
+                color: const Color(0xFFF8F5F2),
+                height: MediaQuery.of(context).size.height * 0.5,
+                width: double.infinity,
+              ),
+              Positioned(
+                left: 0,
+                right: 0,
+                top: 0,
+                child: SizedBox(
+                  height: 273,
+                  width: MediaQuery.of(context).size.width,
+                  child: ListView.separated(
+                    itemCount: foods.length,
+                    scrollDirection: Axis.horizontal,
+                    separatorBuilder: (context, index) {
+                      return const SizedBox();
+                    },
+                    itemBuilder: (context, index) {
+                      final item = foods[index];
+                      return Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 273,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage(
+                              '${item.image}',
+                            ),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              Positioned(
+                child: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -63,14 +98,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           height: 32,
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
-                              color: const Color(0xFFFFFFFF),
-                              boxShadow: const [
-                                BoxShadow(
-                                    blurRadius: 5.0, offset: Offset(0, 5))
-                              ]),
-                          child:
-                              SvgPicture.asset('assets/vectors/ic_line.svg'),
+                            borderRadius: BorderRadius.circular(16),
+                            color: const Color(0xFFFFFFFF),
+                          ),
+                          child: SvgPicture.asset('assets/vectors/ic_line.svg'),
                         ),
                         Stack(
                           children: <Widget>[
@@ -79,12 +110,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               height: 32,
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16),
-                                  color: const Color(0xFFFFFFFF),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                        blurRadius: 5.0, offset: Offset(0, 5))
-                                  ]),
+                                borderRadius: BorderRadius.circular(16),
+                                color: const Color(0xFFFFFFFF),
+                              ),
                               child: SvgPicture.asset(
                                   'assets/vectors/ic_heart.svg'),
                             ),
@@ -94,128 +122,109 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 160,
-            width: MediaQuery.of(context).size.width,
-            child: ListView.separated(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              itemCount: foods.length,
-              scrollDirection: Axis.horizontal,
-              separatorBuilder: (context, index) {
-                return const SizedBox(width: 16);
-              },
-              itemBuilder: (context, index) {
-                final item = foods[index];
-                return Container(
-                  width: 375,
-                  height: 273,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(
-                        '${item.image}',
-                      ),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-          Container(
-            width: 345,
-            height: 168,
-            margin: const EdgeInsets.symmetric(horizontal: 16),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: Colors.white,
-                boxShadow: const [
-                  BoxShadow(blurRadius: 5.0, offset: Offset(0, 5))
-                ]),
-            child: const Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Delicate Fruit Salad',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF3E4462),
-                      decoration: TextDecoration.none,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Jl. Jaya katwang no 4, Ngasem',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Color(0xFF3E4462),
-                      decoration: TextDecoration.none,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Open 8 am - 8pm',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Color(0xFF3E4462),
-                      decoration: TextDecoration.none,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.pin_drop, size: 16, color: Colors.blue), // Icon pin
-                      SizedBox(width: 4), // Khoảng cách giữa icon và văn bản
-                      Text(
-                        '1km ',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Color(0xFF3E4462),
-                          decoration: TextDecoration.none,
-                        ),
-                      ),
-                      Icon(Icons.star, size: 16, color: Colors.yellow), // Icon ngôi sao
-                      SizedBox(width: 4), // Khoảng cách giữa icon và văn bản
-                      Text(
-                        '5.0 ',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Color(0xFF3E4462),
-                          decoration: TextDecoration.none,
-                        ),
-                      ),
-                      Icon(Icons.verified, size: 16, color: Colors.green), // Icon dấu tích
-                      SizedBox(width: 4), // Khoảng cách giữa icon và văn bản
-                      Text(
-                        'verified',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Color(0xFF3E4462),
-                          decoration: TextDecoration.none,
-                        ),
-                      ),
-                    ],
-                  )
-                ],
               ),
-            ),
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 40,
+                child: Container(
+                  height: 168,
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.white,
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Delicate Fruit Salad',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF3E4462),
+                            decoration: TextDecoration.none,
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          'Jl. Jaya katwang no 4, Ngasem',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Color(0xFF3E4462),
+                            decoration: TextDecoration.none,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          'Open 8 am - 8pm',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Color(0xFF3E4462),
+                            decoration: TextDecoration.none,
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.pin_drop, size: 16, color: Colors.blue),
+                            // Icon pin
+                            SizedBox(width: 4),
+                            // Khoảng cách giữa icon và văn bản
+                            Text(
+                              '1km ',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Color(0xFF3E4462),
+                                decoration: TextDecoration.none,
+                              ),
+                            ),
+                            Icon(Icons.star, size: 16, color: Colors.yellow),
+                            // Icon ngôi sao
+                            SizedBox(width: 4),
+                            // Khoảng cách giữa icon và văn bản
+                            Text(
+                              '5.0 ',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Color(0xFF3E4462),
+                                decoration: TextDecoration.none,
+                              ),
+                            ),
+                            Icon(Icons.verified, size: 16, color: Colors.green),
+                            // Icon dấu tích
+                            SizedBox(width: 4),
+                            // Khoảng cách giữa icon và văn bản
+                            Text(
+                              'verified',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Color(0xFF3E4462),
+                                decoration: TextDecoration.none,
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
           SizedBox(
             width: 344,
-            height: 32,
+            height: 35,
             child: Column(
               children: [
                 SizedBox(
                   width: 344,
-                  height: 32,
+                  height: 35,
                   child: Stack(children: [
                     Positioned(
                       top: 0,
@@ -253,16 +262,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     AnimatedPositioned(
                       bottom: 0,
-                      left:
-                          changePositionedOfLine(), // Đặt giá trị cụ thể vào đây thay vì gọi hàm
-                      curve: Curves
-                          .fastLinearToSlowEaseIn, // Sửa từ 'Curve' thành 'Curves' và chọn một loại curve
+                      left: changePositionedOfLine(),
+                      // Đặt giá trị cụ thể vào đây thay vì gọi hàm
+                      curve: Curves.fastLinearToSlowEaseIn,
+                      // Sửa từ 'Curve' thành 'Curves' và chọn một loại curve
                       duration: const Duration(milliseconds: 500),
                       child: AnimatedContainer(
                         curve: Curves.fastLinearToSlowEaseIn,
                         margin: const EdgeInsets.only(left: 10),
-                        duration: const Duration(
-                            milliseconds: 500), // Thay đổi thành milliseconds
+                        duration: const Duration(milliseconds: 500),
+                        // Thay đổi thành milliseconds
                         width: changeContainerWidth(),
                         height: 5,
                         decoration: BoxDecoration(
@@ -279,7 +288,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
-              height: 230,
+              height: 250,
               width: 323,
               color: Colors.white,
               child: ListView.separated(
@@ -429,8 +438,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         color: const Color(0xFFE1E1E1),
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
-                                                BorderRadius.circular(4)
-                                        ),
+                                                BorderRadius.circular(4)),
                                       ),
                                       child: const Icon(
                                         Icons.remove,
@@ -459,8 +467,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         color: const Color(0xFF1D2D50),
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
-                                                BorderRadius.circular(4)
-                                        ),
+                                                BorderRadius.circular(4)),
                                       ),
                                       child: const Icon(
                                         Icons.add,
@@ -634,8 +641,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         color: const Color(0xFFE1E1E1),
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
-                                                BorderRadius.circular(4)
-                                        ),
+                                                BorderRadius.circular(4)),
                                       ),
                                       child: const Icon(
                                         Icons.remove,
@@ -663,7 +669,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       decoration: ShapeDecoration(
                                         color: const Color(0xFF1D2D50),
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(4),
+                                          borderRadius:
+                                              BorderRadius.circular(4),
                                         ),
                                       ),
                                       child: const Icon(
@@ -705,7 +712,8 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 InkWell(
                   child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 20),
                     height: 52,
                     width: 344,
                     decoration: BoxDecoration(
